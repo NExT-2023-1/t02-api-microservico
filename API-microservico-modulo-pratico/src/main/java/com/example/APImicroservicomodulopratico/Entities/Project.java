@@ -1,7 +1,7 @@
 package com.example.APImicroservicomodulopratico.Entities;
 
 import java.time.LocalDate;
-import java.util.List;
+//import java.util.List;
 import java.util.UUID;
 
 import com.example.APImicroservicomodulopratico.Enum.Flag;
@@ -14,8 +14,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+//import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,17 +32,19 @@ import lombok.NoArgsConstructor;
 public class Project {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "project_id", nullable = false)
     private UUID id;
 
     @Column(name = "project_name", nullable = false)
     private String name;
 
-    @Column(name = "project_Cost_Center", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "project_cost_center_id", nullable = false)
     private CostCenter costCenter;
 
-    @Column(name = "project_manager", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "projecti_manager", nullable = false)
     private User manager;
 
     @Column(name = "project_start_date", nullable = false)
@@ -50,18 +53,15 @@ public class Project {
     @Column(name = "project_end_date", nullable = false)
     private LocalDate endDate;
 
-    @Column(name = "project_start_date", nullable = false)
+    @Column(name = "project_status", nullable = false)
     @Enumerated (EnumType.STRING)
     private Status status;
 
-    @Column(name = "project_start_date", nullable = false)
+    @Column(name = "project_flag", nullable = false)
     @Enumerated (EnumType.STRING)
     private Flag flag;
 
-    @OneToMany(mappedBy = "project")
-    private List<User> users;
-
-    @OneToOne(mappedBy = "project")
-    private CostCenter costCenters;
+    /*@OneToMany(mappedBy = "project") //isso é o A MAIS...
+    private List<User> user;*/
 
 }
