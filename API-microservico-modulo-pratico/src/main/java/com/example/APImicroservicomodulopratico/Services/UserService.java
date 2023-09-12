@@ -1,6 +1,7 @@
 package com.example.APImicroservicomodulopratico.Services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import com.example.APImicroservicomodulopratico.DTO.UserUpdateDTO;
 import com.example.APImicroservicomodulopratico.Entities.User;
 import com.example.APImicroservicomodulopratico.Repository.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -37,13 +39,30 @@ public class UserService {
     }
 
     public User update(UUID id, @Valid UserUpdateDTO userUpdateDTO){
-        User user = this.userRepository.findById(id).orElse(null);
-        if (user != null){
-            User updateUser = userUpdateDTO.toEntityUpdate(user);
-            return this.userRepository.save(updateUser);
-        }
-        return null;
+        Optional<User> optionalUser = this.userRepository.findById(id);
 
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            if (userUpdateDTO.getRole() != null) {
+                user.setRole(userUpdateDTO.getRole());
+            }
+
+            if (userUpdateDTO.getName() != null) {
+                user.setName(userUpdateDTO.getName());
+            }
+
+            if (userUpdateDTO.getIsActive() != null) {
+                user.setIsActive(userUpdateDTO.getIsActive());
+            }
+
+            if (userUpdateDTO.getBirthDate() != null) {
+                user.setBirthDate(userUpdateDTO.getBirthDate());
+            }
+            return this.userRepository.save(user);
+        }else{
+            throw new EntityNotFoundException("User not found.");
+        }
     }
 
     public boolean delete(UUID id){

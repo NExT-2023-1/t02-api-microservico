@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/user")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
-    
+    //fazer valida;ão nos campos para ver o que acontece se salva usuarios com mesmos dados
     private final UserService userService;
 
     @PostMapping

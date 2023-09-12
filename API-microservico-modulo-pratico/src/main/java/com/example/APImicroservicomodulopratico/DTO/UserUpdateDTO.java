@@ -3,8 +3,8 @@ package com.example.APImicroservicomodulopratico.DTO;
 import com.example.APImicroservicomodulopratico.Entities.User;
 import com.example.APImicroservicomodulopratico.Enum.Role;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,16 +16,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserUpdateDTO {
     
-    @NotNull
+    //@NotNull
     private Role role;
 
-    @NotBlank
+    //@NotBlank
     private String name;
 
     private Boolean isActive;
 
-    @NotBlank
+    //@NotBlank
     private String birthDate;
+
+    //usar OPTIONAL, p/ não precisar atualizar tudo quando você so quer atualizar X.
 
     public User toEntityUpdate(User user){
         return User.builder()
