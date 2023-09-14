@@ -25,7 +25,7 @@ public class CostCenter {
     @Column(name = "cost_center_id", nullable = false)
     private UUID id;
 
-    @Column(name = "cost_center_name", nullable = false)
+    @Column(name = "cost_center_name", nullable = false, unique = true)
     private String name;
 
 }
