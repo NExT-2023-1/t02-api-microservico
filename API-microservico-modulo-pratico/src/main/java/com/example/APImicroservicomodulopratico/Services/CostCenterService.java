@@ -22,9 +22,14 @@ public class CostCenterService {
     
     private final CostCenterRepository costCenterRepository;
 
-    public CostCenter create(CostCenterDTO costCenterDTO){
-        CostCenter costCenter = costCenterDTO.toEntity();
-        return this.costCenterRepository.save(costCenter);
+    public CostCenter create(CostCenterDTO costCenterDTO) throws Exception{
+        Optional<CostCenter> optionalCostCenter = this.costCenterRepository.findByName(costCenterDTO.getName());
+        if (optionalCostCenter.isPresent()) {
+            throw new Exception("Cost Center name already exists");
+        }else{
+            CostCenter costCenter = costCenterDTO.toEntity();
+            return this.costCenterRepository.save(costCenter);
+        }
     }
 
     public List<CostCenter> listAll(){

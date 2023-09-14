@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,15 +30,24 @@ public class CostCenterController {
     private final CostCenterService costCenterService;
 
     @PostMapping
-    public ResponseEntity<CostCenter> create(@RequestBody @Valid CostCenterDTO costCenterDTO){
+    public CostCenter create(@RequestBody @Valid CostCenterDTO costCenterDTO) throws Exception{
         CostCenter costCenter = costCenterService.create(costCenterDTO);
-        return new ResponseEntity<> (costCenter, HttpStatus.CREATED);
+        return  costCenter;
     }
 
     @GetMapping
     public ResponseEntity<List<CostCenter>> listAll(){
         List<CostCenter> costCenters = this.costCenterService.listAll();
         return new ResponseEntity<>(costCenters, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CostCenter> getById(@PathVariable UUID id){
+        CostCenter costCenter = this.costCenterService.getById(id);
+        if (costCenter != null){
+            return new ResponseEntity<>(costCenter, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
@@ -49,6 +59,12 @@ public class CostCenterController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //Aprofundar MAIS TARDE getByID...
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable UUID id){
+        if (costCenterService.delete(id)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     
 }

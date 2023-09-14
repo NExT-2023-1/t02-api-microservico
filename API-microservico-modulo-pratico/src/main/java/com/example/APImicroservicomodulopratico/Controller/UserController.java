@@ -31,7 +31,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody @Valid UserDTO UserDTO){
+    public ResponseEntity<User> create(@RequestBody @Valid UserDTO UserDTO) throws Exception{
         User user = userService.create(UserDTO);
         return new ResponseEntity<> (user, HttpStatus.CREATED);
     }

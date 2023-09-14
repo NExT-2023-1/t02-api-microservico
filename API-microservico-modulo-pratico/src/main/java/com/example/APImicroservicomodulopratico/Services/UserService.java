@@ -23,9 +23,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User create(UserDTO userDTO){
-        User user = userDTO.toEntity();
-        return this.userRepository.save(user);
+    public User create(UserDTO userDTO) throws Exception{
+        Optional<User> optionalUser = this.userRepository.findByRegistrationNumber(userDTO.getRegistrationNumber());
+        if (optionalUser.isPresent()) {
+            throw new Exception("Registration Number already exists");
+        }else{
+            User user = userDTO.toEntity();
+            return this.userRepository.save(user);
+        }
     }
 
     public List<User> listAll(){

@@ -44,11 +44,11 @@ public class Project {
     private CostCenter costCenter;
 
     @ManyToOne
-    @JoinColumn(name = "projecti_manager", nullable = false)
+    @JoinColumn(name = "project_manager", nullable = false)
     private User manager;
 
     @Column(name = "project_start_date", nullable = false)
-    private LocalDate starDate;
+    private LocalDate startDate;
 
     @Column(name = "project_end_date", nullable = false)
     private LocalDate endDate;
@@ -60,8 +60,5 @@ public class Project {
     @Column(name = "project_flag", nullable = false)
     @Enumerated (EnumType.STRING)
     private Flag flag;
-
-    /*@OneToMany(mappedBy = "project") //isso é o A MAIS...
-    private List<User> user;*/
 
 }

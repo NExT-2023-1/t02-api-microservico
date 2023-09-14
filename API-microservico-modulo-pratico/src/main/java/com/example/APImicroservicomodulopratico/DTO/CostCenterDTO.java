@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CostCenterDTO {
     
-    @NotBlank
+    @NotBlank(message = "Name cannot be null or blank")
     private String name;
 
     public CostCenter toEntity(){
