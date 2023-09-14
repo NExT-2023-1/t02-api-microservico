@@ -1,6 +1,7 @@
 package com.example.APImicroservicomodulopratico.DTO;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import com.example.APImicroservicomodulopratico.Entities.CostCenter;
 import com.example.APImicroservicomodulopratico.Entities.Project;
@@ -27,13 +28,10 @@ public class ProjectDTO {
     private String name;
 
     @NotNull
-    private CostCenter costCenter;
+    private UUID project_cost_center_id;
 
     @NotNull
-    private User manager;
-
-    //private LocalDate starDate;
-    //private LocalDate endDate;
+    private UUID project_manager;
 
     @NotNull
     private Status status;
@@ -41,29 +39,21 @@ public class ProjectDTO {
     @NotNull
     private Flag flag;
 
-    public Project toEntity(){
-        return Project.builder()
-                .name(this.name)
-                .costCenter(this.costCenter)
-                .manager(this.manager)
-                .status(this.status)
-                .flag(this.flag)
-                .starDate(LocalDate.now())
-                .endDate(LocalDate.now())
-                .build();
-    }
+    @NotNull
+    private LocalDate startDate;
 
-    public Project toEntityUpdateProject(Project project){
+    @NotNull
+    private LocalDate endDate;
+
+    public Project toEntity(CostCenter costCenter, User manager){
         return Project.builder()
-                .id(project.getId())
                 .name(this.name)
-                .costCenter(this.costCenter)
-                .manager(this.manager)
+                .costCenter(costCenter)
+                .manager(manager)
                 .status(this.status)
                 .flag(this.flag)
-                .starDate(project.getStarDate())
-                .endDate(LocalDate.now())
-                //.users(project.getUsers()) //aqui trazemos a lista de users vinculados ao projeto?
+                .startDate(this.startDate)
+                .endDate(this.endDate)
                 .build();
     }
     
