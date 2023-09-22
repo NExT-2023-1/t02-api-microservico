@@ -1,5 +1,6 @@
 package com.example.APImicroservicomodulopratico.Entities;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import com.example.APImicroservicomodulopratico.Enum.Role;
@@ -43,6 +44,6 @@ public class User {
     private Boolean isActive;
 
     @Column(name = "user_birth_date", nullable = false)
-    private String birthDate;
+    private LocalDate birthDate;
 
 }
