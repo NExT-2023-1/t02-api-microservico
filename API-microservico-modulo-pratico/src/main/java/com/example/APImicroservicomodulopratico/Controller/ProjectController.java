@@ -37,7 +37,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Project> update(@PathVariable UUID id, @RequestBody @Valid ProjectUpdateDTO projectUpdateDTO){
+    public ResponseEntity<Project> update(@PathVariable UUID id, @RequestBody @Valid ProjectUpdateDTO projectUpdateDTO) throws Exception{
         Project project = projectServices.update(id, projectUpdateDTO);
         if (project != null){
             return new ResponseEntity<>(project, HttpStatus.OK);

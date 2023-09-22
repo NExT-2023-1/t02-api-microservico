@@ -1,8 +1,15 @@
 package com.example.APImicroservicomodulopratico.DTO;
 
+import java.time.LocalDate;
+
 import com.example.APImicroservicomodulopratico.Entities.User;
 import com.example.APImicroservicomodulopratico.Enum.Role;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,8 +37,11 @@ public class UserDTO {
     //@AssertTrue só funciona se quiser trazer que este campo PRECISA ser verdadeiro
     private Boolean isActive;
 
-    @NotBlank
-    private String birthDate;
+    @NotNull
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
 
     public User toEntity(){
         return User.builder()

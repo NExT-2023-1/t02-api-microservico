@@ -1,5 +1,6 @@
 package com.example.APImicroservicomodulopratico.Services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,27 +24,30 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User create(UserDTO userDTO) throws Exception{
+    public User create(UserDTO userDTO) throws Exception {
         Optional<User> optionalUser = this.userRepository.findByRegistrationNumber(userDTO.getRegistrationNumber());
         if (optionalUser.isPresent()) {
             throw new Exception("Registration Number already exists");
-        }else{
+        } else {
+            if (userDTO.getBirthDate().isAfter(LocalDate.now()) || userDTO.getBirthDate().isEqual(LocalDate.now())) {
+                throw new Exception("Birth Date can't be less or equal to current date.");
+            }
             User user = userDTO.toEntity();
             return this.userRepository.save(user);
         }
     }
 
-    public List<User> listAll(){
+    public List<User> listAll() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .collect(Collectors.toList());
     }
 
-    public User getById(UUID id){
+    public User getById(UUID id) {
         return this.userRepository.findById(id).orElse(null);
     }
 
-    public User update(UUID id, @Valid UserUpdateDTO userUpdateDTO){
+    public User update(UUID id, @Valid UserUpdateDTO userUpdateDTO) throws Exception {
         Optional<User> optionalUser = this.userRepository.findById(id);
 
         if (optionalUser.isPresent()) {
@@ -54,7 +58,12 @@ public class UserService {
             }
 
             if (userUpdateDTO.getName() != null) {
-                user.setName(userUpdateDTO.getName());
+                if (!userUpdateDTO.getName().isBlank()) {
+                    user.setName(userUpdateDTO.getName());
+
+                } else {
+                    throw new Exception("Name can't be empty.");
+                }
             }
 
             if (userUpdateDTO.getIsActive() != null) {
@@ -62,15 +71,23 @@ public class UserService {
             }
 
             if (userUpdateDTO.getBirthDate() != null) {
-                user.setBirthDate(userUpdateDTO.getBirthDate());
+                if (userUpdateDTO.getBirthDate().isAfter(LocalDate.now()) || userUpdateDTO.getBirthDate().isEqual(LocalDate.now())) {
+                    throw new Exception("Birth Date can't be less or equal to current date.");
+                } else {
+                    user.setBirthDate(userUpdateDTO.getBirthDate());
+                }
+            }
+
+            if (userUpdateDTO.getRegistrationNumber() != null) {
+                throw new Exception("Registration Number can't be update");
             }
             return this.userRepository.save(user);
-        }else{
+        } else {
             throw new EntityNotFoundException("User not found.");
         }
     }
 
-    public boolean delete(UUID id){
+    public boolean delete(UUID id) {
         User user = this.userRepository.findById(id).orElse(null);
         if (user != null) {
             this.userRepository.delete(user);
@@ -79,5 +96,5 @@ public class UserService {
 
         return false;
     }
-    
+
 }
